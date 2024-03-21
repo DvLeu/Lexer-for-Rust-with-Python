@@ -1,68 +1,54 @@
-import ply.lex as lex
+import re
 
-# Palabras reservadas de Rust
+
 reserved = {
     'fn', 'let', 'mut', 'if', 'else', 'for', 'while', 'return', 'struct',
     'enum', 'match', 'const', 'static', 'impl', 'trait', 'true', 'false',
     'as', 'pub', 'extern', 'crate', 'mod', 'use', 'super', 'self', 'in'
 }
 
-tokens = [
-    'INT',
-    'FLOAT',
-    'IDENTIFIER',
-    'OPERATOR',
-    'PUNCTUATION',
-] + ['RESERVED_' + r.upper() for r in 
 
-t_OPERATOR = r'[\+\-\*/=><!&|%^~]'
-t_PUNCTUATION = r'[{}()\[\];:,\.]'
-
-
-def t_INT(t):
-    r'\b\d+\b'
-    t.value = int(t.value)
-    return t
-
-
-def t_FLOAT(t):
-    r'\b\d+\.\d+\b'
-    t.value = float(t.value)
-    return t
-
-
-def t_IDENTIFIER(t):
-    r'\b[a-zA-Z_][a-zA-Z_0-9]*\b'
-    if t.value in reserved:
-        t.type = 'RESERVED_' + t.value.upper()  # Cambiar tipo si la palabra es reservada
-    return t
-    
-t_ignore = ' \t'
-
-def t_error(t):
-    print(f"Carácter ilegal '{t.value[0]}' en la línea {t.lineno}")
-    t.lexer.skip(1)
-
-
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
-
-
-def lexer_action(data):
-    lexer = lex.lex()
-    lexer.input(data)
-    token_list = []
-    while True:
-        tok = lexer.token()
-        if not tok:
-            break
-        token_list.append((tok.type, tok.value, tok.lineno))
-    return token_list
-
-data =\
-    '''fn main() {
-    let x: i32 = 10 + 20;
+token_patterns = {
+    'INTEGER': r'\b\d+\b',
+    'FLOAT': r'\b\d+\.\d+\b',
+    'IDENTIFIER': r'\b[a-zA-Z_][a-zA-Z_0-9]*\b',
+    'OPERATOR': r'[\+\-\*/=><!&|%^~]',
+    'PUNCTUATION': r'[{}()\[\];:,\.]'
 }
-'''
-print(lexer_action(data))
+def lexer(text):
+    tokens = []
+    position = 0
+    while text:
+        text = text.lstrip()
+        if not text:
+            break
+        match = None
+        for token_type, pattern in token_patterns.items():
+            regex = re.compile(pattern)
+            match = regex.match(text)
+            if match:
+                value = match.group(0)
+                if token_type == 'IDENTIFIER' and value in reserved:
+                    token_type = 'RESERVED'
+                tokens.append((token_type, value, position + match.start(), position + match.end() - 1))
+                position += match.end()
+                text = text[match.end():]
+                break
+        if not match:
+            raise SyntaxError(f"Error léxico: caracter inesperado '{text[0]}' en la posición {position}")
+    return tokens
+
+code = '''
+
+using namespace std;
+int main(){
+printf("Hola");
+return 0;
+}
+}'''
+try:
+    tokens = lexer(code)
+    for token in tokens:
+        print(token)
+except SyntaxError as e:
+    print(e)

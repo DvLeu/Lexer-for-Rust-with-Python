@@ -1,14 +1,12 @@
 import re
 
-
 reserved = {
     'fn', 'let', 'mut', 'if', 'else', 'for', 'while', 'return', 'struct',
     'enum', 'match', 'const', 'static', 'impl', 'trait', 'true', 'false',
     'as', 'pub', 'extern', 'crate', 'mod', 'use', 'super', 'self', 'in'
 }
 
-
-token_patterns = {
+patronTokens = {
     'INTEGER': r'\b\d+\b',
     'FLOAT': r'\b\d+\.\d+\b',
     'IDENTIFIER': r'\b[a-zA-Z_][a-zA-Z_0-9]*\b',
@@ -23,7 +21,7 @@ def lexer(text):
         if not text:
             break
         match = None
-        for token_type, pattern in token_patterns.items():
+        for token_type, pattern in patronTokens.items():
             regex = re.compile(pattern)
             match = regex.match(text)
             if match:
@@ -38,7 +36,7 @@ def lexer(text):
             raise SyntaxError(f"Error léxico: caracter inesperado '{text[0]}' en la posición {position}")
     return tokens
 
-code = '''
+codigoPrueba = '''
 
 using namespace std;
 int main(){
@@ -47,7 +45,7 @@ return 0;
 }
 }'''
 try:
-    tokens = lexer(code)
+    tokens = lexer(codigoPrueba)
     for token in tokens:
         print(token)
 except SyntaxError as e:

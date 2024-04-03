@@ -1,4 +1,4 @@
-import re  # Importa el módulo de expresiones regulares
+import re
 
 # Palabras reservadas del lenguaje
 palabras_reservadas = {
@@ -7,51 +7,56 @@ palabras_reservadas = {
     'as', 'pub', 'extern', 'crate', 'mod', 'use', 'super', 'self', 'in'
 }
 
-# Patrones de tokens con sus expresiones regulares correspondientes
+
 patronTokens = {
-    'INTEGER': r'\b\d+\b',  # Números enteros
-    'FLOAT': r'\b\d+\.\d+\b',  # Números flotantes
-    'IDENTIFIER': r'\b[a-zA-Z_][a-zA-Z_0-9]*\b',  # Identificadores (nombres de variables, funciones, etc.)
-    'OPERATOR': r'[\+\-\*/=><!&|%^~]',  # Operadores (+, -, *, /, =, etc.)
-    'PUNCTUATION': r'[{}()\[\];:,\.]'  # Símbolos de puntuación (, ; { } [ ] ( ) etc.)
+    'INTEGER': re.compile(r'\b\d+\b'),  #
+    'FLOAT': re.compile(r'\b\d+\.\d+([eE][-+]?\d+)?\b'),
+    'STRING': re.compile(r'"(?:\\.|[^"\\])*"'),
+    'COMMENT': re.compile(r'//.*|/\*[^*]*\*+(?:[^/*][^*]*\*+)*/'),
+    'IDENTIFIER': re.compile(r'\b[a-zA-Z_][a-zA-Z_0-9]*\b'),
+    'OPERATOR': re.compile(r'[\+\-\*/=><!&|%^~]'),
+    'PUNCTUATION': re.compile(r'[{}()\[\];:,\.]')
 }
 
-# Función lexer para analizar el texto de entrada
+
 def lexer(texto):
-    tokens = []  # Lista para almacenar los tokens encontrados
-    posicion = 0  # Posición actual en el texto
+    tokens = []
+    posicion = 0
     while texto:
-        texto = texto.lstrip()  # Elimina los espacios en blanco al inicio del texto restante
+        texto = texto.lstrip()
         if not texto:
-            break  # Termina el bucle si no hay más texto después de eliminar espacios en blanco
+            break
         coincidencia = None
-        for tipo_token, patron in patronTokens.items():
-            regex = re.compile(patron)
+        for tipo_token, regex in patronTokens.items():
             coincidencia = regex.match(texto)
             if coincidencia:
                 valor = coincidencia.group(0)
+                if tipo_token == 'COMMENT':
+                    posicion += len(valor)
+                    texto = texto[len(valor):]
+                    break
                 if tipo_token == 'IDENTIFIER' and valor in palabras_reservadas:
-                    tipo_token = 'RESERVED'  # Cambia el tipo a 'RESERVED' si el identificador es una palabra reservada
-                # Añade el token a la lista con su tipo, valor y posición inicial y final
-                tokens.append((tipo_token, valor, posicion + coincidencia.start(), posicion + coincidencia.end() - 1))
-                posicion += coincidencia.end()  # Actualiza la posición para el próximo análisis
-                texto = texto[coincidencia.end():]  # Actualiza el texto restante
+                    tipo_token = 'RESERVED'
+                tokens.append((tipo_token, valor, posicion, posicion + len(valor) - 1))
+                posicion += len(valor)
+                texto = texto[len(valor):]
                 break
         if not coincidencia:
-            # Si no hay coincidencia, significa que hay un caracter inesperado
-            raise SyntaxError(f"Error léxico: caracter inesperado '{texto[0]}' en la posición {posicion}")
+            posicion += 1
+            texto = texto[1:]
     return tokens
 
 # Código de prueba para analizar
 codigoPrueba = '''
-using namespace std;
-int main(){
-printf("Hola");
-return 0;
+fn main() {
+    println!("Hola Mundo");
+    // Esto es un comentario
+    let x = 1.23e+10;
 }
-}'''
 
-# Intenta analizar el código de prueba y captura errores léxicos
+'''
+
+
 try:
     tokens = lexer(codigoPrueba)
     for token in tokens:

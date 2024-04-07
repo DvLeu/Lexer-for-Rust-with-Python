@@ -7,9 +7,9 @@ palabras_reservadas = {
     'as', 'pub', 'extern', 'crate', 'mod', 'use', 'super', 'self', 'in'
 }
 
-
+#Tokens
 patronTokens = {
-    'INTEGER': re.compile(r'\b\d+\b'),  #
+    'INTEGER': re.compile(r'\b\d+\b'),
     'FLOAT': re.compile(r'\b\d+\.\d+([eE][-+]?\d+)?\b'),
     'STRING': re.compile(r'"(?:\\.|[^"\\])*"'),
     'COMMENT': re.compile(r'//.*|/\*[^*]*\*+(?:[^/*][^*]*\*+)*/'),
@@ -49,11 +49,11 @@ def lexer(texto):
 # Código de prueba para analizar
 codigoPrueba = '''
 fn main() {
-    println!("Hola Mundo");
-    // Esto es un comentario
-    let x = 1.23e+10;
+    let x = 10;
+    let y = 20.5;
+    let z = x + y;
+    println!("La suma de {} y {} es {}", x, y, z);
 }
-
 '''
 
 

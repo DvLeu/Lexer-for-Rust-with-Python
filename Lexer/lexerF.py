@@ -1,4 +1,3 @@
-
 import ply.lex as lex
 
 reserved = [ 'break', 'const', 'continue', 'crate', 'else',
@@ -58,7 +57,7 @@ def t_error(t):
     print("Caracter invalido '%s'" % t.value[0] + ", in line: " + str(t.lexer.lineno))
     t.lexer.skip(1)
     raise Exception(
-        "Error lexicografico.\n Por favor remueva el caracter invalido e intentelo de nuevo.\n Caracter invalido '%s'" %
+        "Error lexico.\n  Caracter invalido '%s'" %
         t.value[0] + ", en la linea: " + str(t.lexer.lineno))
 
 def lexer_action(data):
@@ -75,11 +74,11 @@ def lexer_action(data):
 
 if __name__ == "__main__":
     def imprimir_tokens(tokens):
-        print("{:<15} {:<20} {:<10}".format("Tipo", "Valor", "Posición"))
+        print("{:<15} {:<20}".format("Tipo", "Valor"))
         print("-" * 55)
         for token in tokens:
             tipo_token, valor, posicion = token
-            print("{:<15} {:<20} {:<10}".format(tipo_token, valor, posicion))
+            print("{:<15} {:<20} ".format(tipo_token, valor, posicion))
 
     def analizar_archivo_rust(ruta_archivo):
         try:
@@ -94,7 +93,7 @@ if __name__ == "__main__":
             print(e)
             exit(1)
 
-    ruta_archivo = "codigosPrueba/codigo03.rs"
+    ruta_archivo = "codigosPrueba/codigo02.rs"
     analizar_archivo_rust(ruta_archivo)
 
 

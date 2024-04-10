@@ -14,7 +14,7 @@ tokens = (
     'LLAVE_DER', 'OPERATOR', 'COMA', 'PUNTOYCOMA', 'EXCLAMACION','RESERVED'
 )
 
-t_ignore_COMMENT_LINE = r'\/\/.*'
+
 t_CORCHETE_DER = r'\]'
 t_CORCHETE_IZQ = r'\['
 t_LLAVE_IZQ = r'\{'
@@ -26,7 +26,7 @@ t_PUNTOYCOMA = r';'
 t_EXCLAMACION = r'!'
 
 def t_OPERATOR(t):
-    r'[+\-*/=><~#%^\$.:]'
+    r'[+\-*/=><~%^\$:]'
     t.type = 'OPERATOR'
     return t
 def t_IDENTIFIER(t):
@@ -51,7 +51,9 @@ def t_INT(t):
 def t_linea(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-t_ignore = ' \t'
+
+t_ignore = ' \t//.*'
+
 
 def t_error(t):
     print("Caracter invalido '%s'" % t.value[0] + ", in line: " + str(t.lexer.lineno))

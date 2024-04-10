@@ -1,6 +1,11 @@
 fn main() {
-    let x = 5;
-    let y = 1a0;
-    let ñ: u32 = x + y;
-    println!("x07El resultado es: {}", z);
+    let mut contador = 0;
+    while contador < 5 {
+        println!("El contador es {}", contador);
+        contador += 1;
+    }
+
+    if contador == 5 {
+        println!("El bucle ha terminado.");
+    }
 }

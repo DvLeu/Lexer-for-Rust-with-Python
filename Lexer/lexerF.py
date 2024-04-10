@@ -14,7 +14,7 @@ tokens = (
     'LLAVE_DER', 'OPERATOR', 'COMA', 'PUNTOYCOMA', 'EXCLAMACION','RESERVED'
 )
 
-
+t_ignore = ' \t'
 t_CORCHETE_DER = r'\]'
 t_CORCHETE_IZQ = r'\['
 t_LLAVE_IZQ = r'\{'
@@ -25,36 +25,41 @@ t_COMA = r'\,'
 t_PUNTOYCOMA = r';'
 t_EXCLAMACION = r'!'
 
-def t_OPERATOR(t):
+
+def t_COMMENT_MULTILINEA(t):#Ignorar comentarios multilinea.
+    r'/\*(.|\n)*?\*/'
+    pass
+
+def t_COMMENT(t):#Ignorar comentario de una sola linea
+    r'//.*'
+    pass
+
+def t_OPERATOR(t):#Expresion regular que delimita cuales son operadores.
     r'[+\-*/=><~%^\$:]'
     t.type = 'OPERATOR'
     return t
-def t_IDENTIFIER(t):
+def t_IDENTIFIER(t):#Expresion regular la cual determina si son palabras reservadas o identificadores
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     if t.value.lower() in reserved:
         t.type = 'RESERVED'
     else:
         t.type = 'IDENTIFIER'
     return t
-def t_STRING(t):
+def t_STRING(t):#Expresion regular de Strings solo se tomara en cuenta los "EL CONTENIDO AQUI ES IRRELEVANTE XD "
     r'\"(\\.|[^\"])*\"'
     t.value = t.value.strip('"')
     return t
-def t_FLOAT(t):
+def t_FLOAT(t):#Expresion para digitos con decimal
     r'\d+\.\d+'
     t.value = float(t.value)
     return t
-def t_INT(t):
+def t_INT(t):#Expresion para digitos int no pueden tener decimales
     r'\d+(?![\.\d])'
     t.value = int(t.value)
     return t
-def t_linea(t):
+def t_linea(t):#contador de líneas del lexer cada vez que encuentra un salto de línea (\n).
     r'\n+'
     t.lexer.lineno += len(t.value)
-
-t_ignore = ' \t//.*'
-
-
 def t_error(t):
     print("Caracter invalido '%s'" % t.value[0] + ", in line: " + str(t.lexer.lineno))
     t.lexer.skip(1)
@@ -95,7 +100,7 @@ if __name__ == "__main__":
             print(e)
             exit(1)
 
-    ruta_archivo = "codigosPrueba/codigo02.rs"
+    ruta_archivo = "codigosPrueba/codigoerror2.rs"
     analizar_archivo_rust(ruta_archivo)
 
 

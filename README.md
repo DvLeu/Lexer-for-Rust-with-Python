@@ -7,12 +7,13 @@ This project for the subject "Languages and Automata 1" consists of a lexer desi
 The project has room for improvement, and any contributions are greatly appreciated
 
 ## Instructions for use : 
-Dependencies
+##Dependencies
 Install the necessary packages:
 ```python
 pip install ply
 ```
-
+##Running the Lexer:
+Import the necessary module:
 ## License
 Free to use.
 

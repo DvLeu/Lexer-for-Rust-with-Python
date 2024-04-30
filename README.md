@@ -1,14 +1,24 @@
 # Rust Lexer Project by DVLeu
 
-## Descripción
+## Description
 This project for the subject "Languages and Automata 1" consists of a lexer designed to analyze Rust code. It identifies elements of the code such as variables, operators, and comments to help understand its structure.
 
-## Contribuciones
+## Contributions
 The project has room for improvement, and any contributions are greatly appreciated
-## Licencia
+
+## Instructions for use : 
+Dependencies
+Install the necessary packages:
+pip install ply
+
+## License
 Free to use.
 
-
+```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
 
 
 

@@ -9,16 +9,14 @@ The project has room for improvement, and any contributions are greatly apprecia
 ## Instructions for use : 
 Dependencies
 Install the necessary packages:
+```python
 pip install ply
+```
 
 ## License
 Free to use.
 
-```ruby
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
-```
+
 
 
 

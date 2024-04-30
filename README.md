@@ -1,11 +1,15 @@
 # Rust Lexer Project by DVLeu
 
 ## Descripción
-Proyecto para la materia de Lenguajes y Automatas 1 consiste en un lexer diseñado para analizar código en Rust. 
-Identifica elementos del código como variables, operadores y comentarios para ayudar a entender su estructura.
+This project for the subject "Languages and Automata 1" consists of a lexer designed to analyze Rust code. It identifies elements of the code such as variables, operators, and comments to help understand its structure.
 
 ## Contribuciones
-El proyecto tiene margen de mejora se agradecen mucho las mejoras que se les pueda hacer.
-
+The project has room for improvement, and any contributions are greatly appreciated
 ## Licencia
-Libre uso.
+Free to use.
+
+
+
+
+
+

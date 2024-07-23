@@ -7,7 +7,7 @@ reserved = [ 'break', 'const', 'continue', 'crate', 'else',
     'struct', 'super', 'trait', 'true',  'while'
 ]
 
-
+#Tokenizar cada una de los simbolos del alfabeto de Rust
 tokens = (
     'INT', 'PARENTESIS_IZQ', 'PARENTESIS_DER', 'FLOAT', 'STRING',
     'IDENTIFIER', 'CORCHETE_DER', 'CORCHETE_IZQ', 'LLAVE_IZQ',
